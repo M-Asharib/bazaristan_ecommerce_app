@@ -1,6 +1,6 @@
 import 'package:ecommerce/screen/home/admin_dashboard.dart';
 import 'package:ecommerce/screen/home/widgets/buttom_navigator_bar.dart';
-import 'package:ecommerce/screen/home/widgets/custom_appbar';
+import 'package:ecommerce/screen/home/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'home_page.dart';
 import 'categories_page.dart';
