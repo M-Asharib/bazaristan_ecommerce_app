@@ -14,10 +14,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           // Handle menu action
         },
       ),
-      // title: Text(
-      //   role == 'admin' ? 'Admin Dashboard' : 'Ecommerce App',
-      //   style: TextStyle(fontWeight: FontWeight.bold),
-      // ),
+      title: Text(
+        role == 'admin' ? 'Admin Dashboard' : 'Ecommerce App',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
       actions: [
         IconButton(
           icon: Icon(Icons.notifications_none),
