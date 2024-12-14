@@ -1,4 +1,4 @@
-import 'package:ecommerce/screen/home/mychat.dart';
+// import 'package:ecommerce/screen/home/mychat.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -112,19 +112,19 @@ class ProfilePage extends StatelessWidget {
                   title: 'Update Payment',
                   onTap: () {},
                 ),
-                _buildListTile(
-                  context,
-                  icon: Icons.chat_bubble_outline,
-                  title: 'My Chats',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => UserChatScreen(),
-                      ),
-                    );
-                  },
-                ),
+                // _buildListTile(
+                //   context,
+                //   icon: Icons.chat_bubble_outline,
+                //   title: 'My Chats',
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => UserChatScreen(),
+                //       ),
+                //     );
+                //   },
+                // ),
                 _buildListTile(
                   context,
                   icon: Icons.chat_bubble_outline,

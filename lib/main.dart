@@ -8,12 +8,12 @@ import 'package:ecommerce/screen/auth/mailer.dart';
 import 'package:ecommerce/screen/auth/otp.dart';
 import 'package:ecommerce/screen/auth/signin.dart';
 import 'package:ecommerce/screen/auth/welcome.dart';
-import 'package:ecommerce/screen/home/adminallchats.dart';
-import 'package:ecommerce/screen/home/adminchat.dart';
+// import 'package:ecommerce/screen/home/adminallchats.dart';
+// import 'package:ecommerce/screen/home/adminchat.dart';
 import 'package:ecommerce/screen/home/categories_products.dart';
 import 'package:ecommerce/screen/home/home_page.dart';
 import 'package:ecommerce/screen/home/home_screen.dart';
-import 'package:ecommerce/screen/home/mychat.dart';
+// import 'package:ecommerce/screen/home/mychat.dart';
 import 'package:ecommerce/screen/home/phonenumberauth.dart';
 import 'package:ecommerce/screen/home/profile_page.dart';
 import 'package:ecommerce/screen/auth/login.dart';
@@ -109,18 +109,18 @@ class MyApp extends StatelessWidget {
       //   path: '/products',
       //   builder: (context, state) => ProductsScreen(),
       // ),
-      GoRoute(
-        path: '/chats',
-        builder: (context, state) => UserChatScreen(),
-      ),
+      // GoRoute(
+      //   path: '/chats',
+      //   builder: (context, state) => UserChatScreen(),
+      // ),
       GoRoute(
         path: '/Phone',
         builder: (context, state) => PhoneAuthScreen(),
       ),
-      GoRoute(
-        path: '/adminchats',
-        builder: (context, state) => AdminDashboard(),
-      ),
+      // GoRoute(
+      //   path: '/adminchats',
+      //   builder: (context, state) => AdminDashboard(),
+      // ),
       // Dynamic path for product details
       GoRoute(
         path: '/product/:id', // Define path with dynamic parameter
