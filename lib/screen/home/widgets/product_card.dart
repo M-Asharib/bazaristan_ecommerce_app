@@ -27,7 +27,7 @@ class ProductCard extends StatelessWidget {
 
     return Container(
       width: screenWidth > 600 ? 150 : screenWidth * 0.3, // Responsive width
-      margin: EdgeInsets.all(8), // Space around the card
+      margin: EdgeInsets.only(right: 8.0), // Space around the card
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8), // Rounded corners

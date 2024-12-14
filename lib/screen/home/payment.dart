@@ -46,6 +46,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   Text('Street: ${shippingDetails['street']}'),
                 Text('City: ${shippingDetails['city']}'),
                 Text('Country: ${shippingDetails['country']}'),
+                Text('Province: ${shippingDetails['province']}'),
                 Divider(height: 30),
 
                 // Payment Details Section

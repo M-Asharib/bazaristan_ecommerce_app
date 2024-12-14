@@ -1,7 +1,7 @@
 import 'package:ecommerce/screen/home/categories_products.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:go_router/go_router.dart'; // Import go_router
+import 'package:shimmer/shimmer.dart'; // Import shimmer package
 
 class SubCategoriesPage extends StatelessWidget {
   final String categoryId;
@@ -33,7 +33,28 @@ class SubCategoriesPage extends StatelessWidget {
         stream: fetchSubCategories(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return GridView.builder(
+              padding: EdgeInsets.all(10),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // Number of items per row
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 3.5, // Adjust aspect ratio as needed
+              ),
+              itemCount: 6, // Simulate 6 shimmer placeholders
+              itemBuilder: (context, index) {
+                return Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                );
+              },
+            );
           }
 
           if (snapshot.hasError) {
@@ -46,25 +67,48 @@ class SubCategoriesPage extends StatelessWidget {
             return Center(child: Text("No sub-categories available"));
           }
 
-          return ListView.builder(
+          return GridView.builder(
+            padding: EdgeInsets.all(10),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // Number of items per row
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 3.5, // Adjust aspect ratio as needed
+            ),
             itemCount: subCategories.length,
             itemBuilder: (context, index) {
               var subCategory = subCategories[index];
-              return ListTile(
-                title: Text(subCategory["name"]!),
+              return GestureDetector(
                 onTap: () {
-                  // Handle sub-category tap using MaterialPageRoute
-                Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (context) => CategoryDetailPage(
-      categoryId: categoryId, // Passing categoryId
-      subCategoryId: subCategory["id"]!, // Passing sub-category ID
-    ),
-  ),
-);
-
+                  // Handle sub-category tap
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryDetailPage(
+                        categoryId: categoryId, // Passing categoryId
+                        subCategoryId:
+                            subCategory["id"]!, // Passing sub-category ID
+                      ),
+                    ),
+                  );
                 },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.green, // Background color
+                    borderRadius: BorderRadius.circular(10), // Rounded corners
+                  ),
+                  child: Center(
+                    child: Text(
+                      subCategory["name"]!,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
               );
             },
           );

@@ -342,7 +342,8 @@ class _CartPageState extends State<CartPage> {
                 if (phoneController.text.isEmpty ||
                     addressController.text.isEmpty ||
                     cityController.text.isEmpty ||
-                    countryController.text.isEmpty) {
+                    streetController.text.isEmpty ||
+                    provinceController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("Please fill all required fields.")),
                   );
@@ -360,6 +361,7 @@ class _CartPageState extends State<CartPage> {
                         'street': streetController.text,
                         'city': cityController.text,
                         'country': countryController.text,
+                        'province': provinceController.text,
                       },
                     ),
                   ),
@@ -380,8 +382,7 @@ class _CartPageState extends State<CartPage> {
                           8), // Add some spacing between the price and the text
                   Text(
                     'Proceed to Payment',
-                    style: TextStyle(
-                        color: Colors.white), // Green color for the text
+                    style: TextStyle(color: Colors.white),
                   ),
                 ],
               ),
@@ -392,12 +393,11 @@ class _CartPageState extends State<CartPage> {
               backgroundColor: Colors.green, // White background for the button
             ),
             body: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0), // Uniform horizontal padding
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min, // Fit the content to screen
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(height: 16),
 
@@ -406,21 +406,14 @@ class _CartPageState extends State<CartPage> {
                       controller: phoneController,
                       decoration: InputDecoration(
                         labelText: 'Phone Number',
+                        hintText: 'e.g., 3123456789',
                         prefixIcon: Icon(Icons.phone),
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 16, horizontal: 12), // Align content
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                       keyboardType: TextInputType.phone,
-                      inputFormatters: [
-                        FilteringTextInputFormatter
-                            .digitsOnly, // Allow digits only
-                        LengthLimitingTextInputFormatter(
-                            10), // Limit to 10 digits after +92
-                        PhoneInputFormatter(), // Custom formatter for validation
-                      ],
                     ),
-
                     SizedBox(height: 16),
                     TextField(
                       controller: addressController,
@@ -428,8 +421,8 @@ class _CartPageState extends State<CartPage> {
                         labelText: 'Delivery Address',
                         prefixIcon: Icon(Icons.location_on),
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 16, horizontal: 12), // Align content
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                       keyboardType: TextInputType.text,
                     ),
@@ -440,8 +433,8 @@ class _CartPageState extends State<CartPage> {
                         labelText: 'Street Address (Optional)',
                         prefixIcon: Icon(Icons.streetview),
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 16, horizontal: 12), // Align content
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
                       keyboardType: TextInputType.text,
                     ),
@@ -449,7 +442,7 @@ class _CartPageState extends State<CartPage> {
                     SizedBox(height: 16),
                     TextField(
                       controller: countryController,
-                      enabled: false, // Disable editing
+                      enabled: false,
                       decoration: InputDecoration(
                         labelText: 'Pakistan',
                         prefixIcon: Icon(Icons.flag),
@@ -470,12 +463,6 @@ class _CartPageState extends State<CartPage> {
                             onChanged: (String? newValue) {
                               setState(() {
                                 provinceController.text = newValue ?? '';
-                                // Update city dropdown based on selected province
-                                final cities = provinceCities1[newValue] ?? [];
-                                cityController.text =
-                                    cities.isNotEmpty ? cities.first : '';
-                                pakistanCities.clear();
-                                pakistanCities.addAll(cities);
                               });
                             },
                             dropdownDecoratorProps: DropDownDecoratorProps(
@@ -499,137 +486,46 @@ class _CartPageState extends State<CartPage> {
                         SizedBox(width: 16),
                         Expanded(
                           child: DropdownSearch<String>(
-                            items: pakistanCities, // List of cities in Pakistan
+                            items: pakistanCities,
                             selectedItem: cityController.text.isEmpty
                                 ? null
-                                : cityController
-                                    .text, // Selected city based on controller
+                                : cityController.text,
                             onChanged: (String? newValue) {
                               setState(() {
-                                cityController.text =
-                                    newValue ?? ''; // Update the selected city
+                                cityController.text = newValue ?? '';
                               });
                             },
                             dropdownDecoratorProps: DropDownDecoratorProps(
                               dropdownSearchDecoration: InputDecoration(
-                                labelText: 'City', // Label for the dropdown
-                                prefixIcon: Icon(
-                                    Icons.location_city), // Icon for the city
+                                labelText: 'City',
+                                prefixIcon: Icon(Icons.location_city),
                                 filled: true,
-                                fillColor: Colors.grey[200], // Background color
+                                fillColor: Colors.grey[200],
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      10.0), // Border radius
-                                  borderSide: BorderSide.none, // No border side
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide.none,
                                 ),
                               ),
                             ),
-                            popupProps: PopupProps.menu(
-                              showSearchBox:
-                                  true, // Enable search box in the dropdown
-                            ),
+                            popupProps: PopupProps.menu(showSearchBox: true),
                             dropdownBuilder: (context, selectedItem) {
-                              return Text(selectedItem ??
-                                  'City'); // Display selected city or default label
+                              return Text(selectedItem ?? 'City');
                             },
                           ),
                         ),
                       ],
                     ),
 
-                    // Row(
-                    //   children: [
-                    //     Expanded(
-                    //       child: DropdownSearch<String>(
-                    //         items:
-                    //             pakistanProvinces, // List of cities in Pakistan
-                    //         selectedItem: provinceController.text.isEmpty
-                    //             ? null
-                    //             : provinceController
-                    //                 .text, // Selected city based on controller
-                    //         onChanged: (String? newValue) {
-                    //           setState(() {
-                    //             provinceController.text =
-                    //                 newValue ?? ''; // Update the selected city
-                    //           });
-                    //         },
-                    //         dropdownDecoratorProps: DropDownDecoratorProps(
-                    //           dropdownSearchDecoration: InputDecoration(
-                    //             labelText: 'Province', // Label for the dropdown
-                    //             prefixIcon: Icon(
-                    //                 Icons.location_city), // Icon for the city
-                    //             filled: true,
-                    //             fillColor: Colors.grey[200], // Background color
-                    //             border: OutlineInputBorder(
-                    //               borderRadius: BorderRadius.circular(
-                    //                   10.0), // Border radius
-                    //               borderSide: BorderSide.none, // No border side
-                    //             ),
-                    //           ),
-                    //         ),
-                    //         popupProps: PopupProps.menu(
-                    //           showSearchBox:
-                    //               true, // Enable search box in the dropdown
-                    //         ),
-                    //         dropdownBuilder: (context, selectedItem) {
-                    //           return Text(selectedItem ??
-                    //               'Province'); // Display selected city or default label
-                    //         },
-                    //       ),
-                    //     ),
-                    //     SizedBox(width: 16),
-                    //     Expanded(
-                    //       child: DropdownSearch<String>(
-                    //         items: pakistanCities, // List of cities in Pakistan
-                    //         selectedItem: cityController.text.isEmpty
-                    //             ? null
-                    //             : cityController
-                    //                 .text, // Selected city based on controller
-                    //         onChanged: (String? newValue) {
-                    //           setState(() {
-                    //             cityController.text =
-                    //                 newValue ?? ''; // Update the selected city
-                    //           });
-                    //         },
-                    //         dropdownDecoratorProps: DropDownDecoratorProps(
-                    //           dropdownSearchDecoration: InputDecoration(
-                    //             labelText: 'City', // Label for the dropdown
-                    //             prefixIcon: Icon(
-                    //                 Icons.location_city), // Icon for the city
-                    //             filled: true,
-                    //             fillColor: Colors.grey[200], // Background color
-                    //             border: OutlineInputBorder(
-                    //               borderRadius: BorderRadius.circular(
-                    //                   10.0), // Border radius
-                    //               borderSide: BorderSide.none, // No border side
-                    //             ),
-                    //           ),
-                    //         ),
-                    //         popupProps: PopupProps.menu(
-                    //           showSearchBox:
-                    //               true, // Enable search box in the dropdown
-                    //         ),
-                    //         dropdownBuilder: (context, selectedItem) {
-                    //           return Text(selectedItem ??
-                    //               'City'); // Display selected city or default label
-                    //         },
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-
                     Divider(),
 
-                    // List of selected cart items
                     ListView.builder(
-                      shrinkWrap: true, // Fit content to avoid overflow
+                      shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: selectedItems.length,
                       itemBuilder: (context, index) {
                         final item = selectedItems[index];
                         return ListTile(
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 0), // Align with text fields
+                          contentPadding: EdgeInsets.symmetric(horizontal: 0),
                           leading: item['image'] != null
                               ? Image.memory(
                                   item['image'],
@@ -640,8 +536,7 @@ class _CartPageState extends State<CartPage> {
                               : Icon(Icons.computer, size: 40),
                           title: Text(
                             item['name'],
-                            style: TextStyle(
-                                fontSize: 16), // Match TextField font size
+                            style: TextStyle(fontSize: 16),
                           ),
                           subtitle: Text(
                             'Qty: ${item['quantity']}',
@@ -649,7 +544,7 @@ class _CartPageState extends State<CartPage> {
                           ),
                           trailing: Text(
                             '\ ${currency} ${(item['price'] * item['quantity']).toStringAsFixed(2)}',
-                            style: TextStyle(fontSize: 16), // Match alignment
+                            style: TextStyle(fontSize: 16),
                           ),
                         );
                       },
@@ -663,6 +558,17 @@ class _CartPageState extends State<CartPage> {
           ),
         );
       },
+      backgroundColor:
+          Colors.black.withOpacity(0.2), // Top 20% opacity background
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.8, // 80% height
+      ),
     );
   }
 
@@ -797,14 +703,37 @@ class _CartPageState extends State<CartPage> {
 }
 
 class PhoneInputFormatter extends TextInputFormatter {
+  final int maxLength;
+
+  PhoneInputFormatter(
+      {this.maxLength = 13}); // Default limit: +923XXXXXXXXX (12 characters)
+
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    // Only allow numbers and restrict to proper format
-    final text = newValue.text;
-    if (text.length > 0 && text[0] != '3') {
-      return oldValue; // Prevent any number that doesn't start with '3'
+    String text = newValue.text;
+
+    // Ensure text always starts with +92
+    if (!text.startsWith('+92')) {
+      text = '+92' + text.replaceAll('+92', '').trim();
     }
-    return newValue;
+
+    // Only allow digits and restrict formatting
+    text = text.replaceAll(RegExp(r'[^0-9+]'), ''); // Allow digits and +
+
+    // Ensure the first digit after +92 is '3'
+    if (text.length > 3 && text[3] != '3') {
+      return oldValue; // Revert if invalid
+    }
+
+    // Enforce max length
+    if (text.length > maxLength) {
+      text = text.substring(0, maxLength); // Trim to max length
+    }
+
+    return TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
   }
 }

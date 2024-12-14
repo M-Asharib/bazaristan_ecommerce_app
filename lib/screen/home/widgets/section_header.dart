@@ -12,11 +12,7 @@ class ProductHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-          left: 16.0,
-          right: 16.0,
-          top: 25.0,
-          bottom: 2.0), // Add some vertical space
+      padding: const EdgeInsets.only(bottom: 2.0), // Add some vertical space
       child: Row(
         mainAxisAlignment: MainAxisAlignment
             .spaceBetween, // Space between the title and "See More"
@@ -26,7 +22,7 @@ class ProductHeader extends StatelessWidget {
             title,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18, // Larger font size for a section header
+                  fontSize: 16, // Larger font size for a section header
                   color: Colors
                       .black, // Ensure the title has a strong contrast color
                 ),

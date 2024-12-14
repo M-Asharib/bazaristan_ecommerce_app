@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final String productId;
@@ -111,7 +112,24 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     if (isLoading) {
       return Scaffold(
         appBar: AppBar(title: Text("Product Details")),
-        body: Center(child: CircularProgressIndicator()),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Shimmer for product image
+              shimmerLoading(height: 200, width: 200),
+              SizedBox(height: 20),
+              // Shimmer for product name
+              shimmerLoading(height: 20, width: 200),
+              SizedBox(height: 10),
+              // Shimmer for product price
+              shimmerLoading(height: 20, width: 100),
+              SizedBox(height: 20),
+              // Shimmer for description
+              shimmerLoading(height: 20, width: 300),
+            ],
+          ),
+        ),
       );
     }
 
@@ -396,4 +414,24 @@ class ProductInfoSection extends StatelessWidget {
       ),
     );
   }
+}
+
+// Function to return a shimmer widget
+Widget shimmerLoading({
+  required double height,
+  required double width,
+  BorderRadius? borderRadius,
+}) {
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: borderRadius ?? BorderRadius.circular(8),
+      ),
+    ),
+  );
 }
