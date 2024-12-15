@@ -64,7 +64,30 @@ class SubCategoriesPage extends StatelessWidget {
           final subCategories = snapshot.data ?? [];
 
           if (subCategories.isEmpty) {
-            return Center(child: Text("No sub-categories available"));
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize
+                    .min, // Make the column take the smallest space needed
+                children: [
+                  Icon(
+                    Icons
+                        .warning, // You can change this icon to whatever fits your needs
+                    color: Colors.green, // Set the color to match your theme
+                    size: 50, // Icon size
+                  ),
+                  SizedBox(
+                      height:
+                          10), // Add some spacing between the icon and the text
+                  Text(
+                    "No categories available",
+                    style: TextStyle(
+                      fontSize: 18, // Set font size for the text
+                      color: Colors.black, // Text color
+                    ),
+                  ),
+                ],
+              ),
+            );
           }
 
           return GridView.builder(

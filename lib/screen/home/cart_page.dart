@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:typed_data';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/services.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CartPage extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _CartPageState extends State<CartPage> {
   // Variable to hold cart data from Firestore
   List<Map<String, dynamic>> cartItems = [];
   final currency = "PKR";
+
   final List<String> pakistanCities = [
     'Karachi',
     'Lahore',
@@ -154,16 +156,95 @@ class _CartPageState extends State<CartPage> {
   ];
 
   final Map<String, List<String>> provinceCities1 = {
-    'Punjab': ['Lahore', 'Multan', 'Faisalabad', 'Rawalpindi'],
-    'Sindh': ['Karachi', 'Hyderabad', 'Sukkur', 'Larkana'],
-    'Khyber Pakhtunkhwa': ['Peshawar', 'Abbottabad', 'Swat'],
-    'Balochistan': ['Quetta', 'Gwadar', 'Turbat'],
+    'Punjab': [
+      'Lahore',
+      'Multan',
+      'Faisalabad',
+      'Rawalpindi',
+      'Sialkot',
+      'Gujranwala',
+      'Bahawalpur',
+      'Sargodha',
+      'Jhelum',
+      'Kasur',
+      'Mianwali',
+      'Chiniot',
+      'Rahim Yar Khan',
+      'Gujrat',
+      'Attock'
+    ],
+    'Sindh': [
+      'Karachi',
+      'Hyderabad',
+      'Sukkur',
+      'Larkana',
+      'Mirpurkhas',
+      'Nawabshah',
+      'Khairpur',
+      'Thatta',
+      'Dadu',
+      'Badin',
+      'Umerkot',
+      'Jamshoro',
+      'Tando Allahyar',
+      'Tando Muhammad Khan',
+      'Shikarpur',
+      'Sanghar',
+      'Matli'
+    ],
+    'Khyber Pakhtunkhwa': [
+      'Peshawar',
+      'Abbottabad',
+      'Swat',
+      'Mardan',
+      'Nowshera',
+      'Dera Ismail Khan',
+      'Bannu',
+      'Chitral',
+      'Haripur',
+      'Kohat',
+      'Mansehra',
+      'Kohistan',
+      'Shangla'
+    ],
+    'Balochistan': [
+      'Quetta',
+      'Gwadar',
+      'Turbat',
+      'Sibi',
+      'Zhob',
+      'Loralai',
+      'Kalat',
+      'Chaman',
+      'Dera Murad Jamali',
+      'Mastung',
+      'Khuzdar',
+      'Pishin',
+      'Killa Abdullah',
+      'Lasbela'
+    ],
     'Islamabad Capital Territory': ['Islamabad'],
-    'Azad Kashmir': ['Muzaffarabad', 'Mirpur', 'Rawalakot'],
-    'Gilgit-Baltistan': ['Gilgit', 'Skardu', 'Hunza'],
+    'Azad Kashmir': [
+      'Muzaffarabad',
+      'Mirpur',
+      'Rawalakot',
+      'Bagh',
+      'Kotli',
+      'Islamabad',
+      'Poonch',
+      'Neelum'
+    ],
+    'Gilgit-Baltistan': [
+      'Gilgit',
+      'Skardu',
+      'Hunza',
+      'Diamer',
+      'Ghizer',
+      'Astore'
+    ]
   };
 
-  // final List<String> pakistanCities1 = []; // Dynamic based on province
+  final List<String> pakistanCities1 = []; // Dynamic based on province
 
   @override
   void initState() {
@@ -171,7 +252,6 @@ class _CartPageState extends State<CartPage> {
     fetchCartItems();
   }
 
-  // Fetch cart items from Firestore
   Future<void> fetchCartItems() async {
     final user = FirebaseAuth.instance.currentUser;
 
@@ -296,6 +376,8 @@ class _CartPageState extends State<CartPage> {
 
   void showCheckoutBottomSheet() {
     // Filter selected items for checkout
+    // List<String> pakistanProvinces1 = ['Punjab', 'Sindh', 'Balochistan', 'KPK'];
+
     final selectedItems =
         cartItems.where((item) => item['isSelected']).toList();
 
@@ -412,8 +494,15 @@ class _CartPageState extends State<CartPage> {
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                       ),
-                      keyboardType: TextInputType.phone,
+                      keyboardType: TextInputType
+                          .phone, // Use TextInputType.phone for phone numbers
+                      inputFormatters: [
+                        PhoneInputFormatter(
+                            maxLength:
+                                13), // Applying the phone input formatter
+                      ],
                     ),
+
                     SizedBox(height: 16),
                     TextField(
                       controller: addressController,
@@ -452,8 +541,12 @@ class _CartPageState extends State<CartPage> {
                       ),
                     ),
                     SizedBox(height: 16),
+
                     Row(
                       children: [
+                        // Province Dropdown
+                        // Province Dropdown (Parent)
+
                         Expanded(
                           child: DropdownSearch<String>(
                             items: pakistanProvinces1,
@@ -463,6 +556,12 @@ class _CartPageState extends State<CartPage> {
                             onChanged: (String? newValue) {
                               setState(() {
                                 provinceController.text = newValue ?? '';
+                                // Update city dropdown based on selected province
+                                final cities = provinceCities1[newValue] ?? [];
+                                cityController.text =
+                                    cities.isNotEmpty ? cities.first : '';
+                                pakistanCities.clear();
+                                pakistanCities.addAll(cities);
                               });
                             },
                             dropdownDecoratorProps: DropDownDecoratorProps(
@@ -486,30 +585,38 @@ class _CartPageState extends State<CartPage> {
                         SizedBox(width: 16),
                         Expanded(
                           child: DropdownSearch<String>(
-                            items: pakistanCities,
+                            items: pakistanCities, // List of cities in Pakistan
                             selectedItem: cityController.text.isEmpty
                                 ? null
-                                : cityController.text,
+                                : cityController
+                                    .text, // Selected city based on controller
                             onChanged: (String? newValue) {
                               setState(() {
-                                cityController.text = newValue ?? '';
+                                cityController.text =
+                                    newValue ?? ''; // Update the selected city
                               });
                             },
                             dropdownDecoratorProps: DropDownDecoratorProps(
                               dropdownSearchDecoration: InputDecoration(
-                                labelText: 'City',
-                                prefixIcon: Icon(Icons.location_city),
+                                labelText: 'City', // Label for the dropdown
+                                prefixIcon: Icon(
+                                    Icons.location_city), // Icon for the city
                                 filled: true,
-                                fillColor: Colors.grey[200],
+                                fillColor: Colors.grey[200], // Background color
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(
+                                      10.0), // Border radius
+                                  borderSide: BorderSide.none, // No border side
                                 ),
                               ),
                             ),
-                            popupProps: PopupProps.menu(showSearchBox: true),
+                            popupProps: PopupProps.menu(
+                              showSearchBox:
+                                  true, // Enable search box in the dropdown
+                            ),
                             dropdownBuilder: (context, selectedItem) {
-                              return Text(selectedItem ?? 'City');
+                              return Text(selectedItem ??
+                                  'City'); // Display selected city or default label
                             },
                           ),
                         ),
@@ -582,12 +689,30 @@ class _CartPageState extends State<CartPage> {
       appBar: AppBar(
         title: Text('Your Cart'),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          if (cartItems.any((item) => item['isSelected'])) {
+            // If any item is selected, show the checkout bottom sheet
+            showCheckoutBottomSheet();
+          } else {
+            // If no item is selected, you can handle the case (show a message, etc.)
+            print("No item selected");
+          }
+        },
+        label: Text(
+          'Proceed to Checkout',
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold // Set text color to white
+              ),
+        ),
+        backgroundColor: Colors.green, // Set background color to green
+      ),
       body: Column(
         children: [
-          // Display cart items
           Expanded(
             child: cartItems.isEmpty
-                ? Center(child: CircularProgressIndicator())
+                ? _buildShimmerLoading() // Display the shimmer effect when cartItems is empty
                 : Padding(
                     padding: const EdgeInsets.all(0),
                     child: Column(
@@ -670,7 +795,7 @@ class _CartPageState extends State<CartPage> {
                     Text(
                       'Total:',
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         color: Colors.grey,
                       ),
                     ),
@@ -678,21 +803,25 @@ class _CartPageState extends State<CartPage> {
                     Text(
                       '${currency} ${totalPrice.toStringAsFixed(2)}',
                       style: TextStyle(
-                        fontSize: 14, // Slightly larger font size for the price
+                        fontSize: 18, // Slightly larger font size for the price
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
-                ElevatedButton(
-                  onPressed: cartItems.any((item) => item['isSelected'])
-                      ? showCheckoutBottomSheet // Show checkout if any item is selected
-                      : null,
-                  child: Text(
-                    'Proceed to Checkout',
-                    style: TextStyle(color: Colors.green),
-                  ),
-                ),
+                // ElevatedButton(
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor:
+                //         Colors.green, // Set background color to green
+                //   ),
+                //   onPressed: cartItems.any((item) => item['isSelected'])
+                //       ? showCheckoutBottomSheet // Show checkout if any item is selected
+                //       : null,
+                //   child: Text(
+                //     'Proceed to Checkout',
+                //     style: TextStyle(color: Colors.white),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -736,4 +865,48 @@ class PhoneInputFormatter extends TextInputFormatter {
       selection: TextSelection.collapsed(offset: text.length),
     );
   }
+}
+
+Widget _buildShimmerLoading() {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: ListView.builder(
+        itemCount: 5, // Showing 5 items as a placeholder while loading
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              children: [
+                Container(
+                  width: 40.0,
+                  height: 40.0,
+                  color: Colors.white,
+                ),
+                SizedBox(width: 16.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 100.0,
+                      height: 10.0,
+                      color: Colors.white,
+                    ),
+                    SizedBox(height: 8.0),
+                    Container(
+                      width: 60.0,
+                      height: 10.0,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    ),
+  );
 }
