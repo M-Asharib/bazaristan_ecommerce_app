@@ -24,6 +24,9 @@ class ProfilePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Back Button and Edit Profile Button in Row
+                SizedBox(
+                  height: 15,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

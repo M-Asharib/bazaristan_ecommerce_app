@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 import 'product_card.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProductList extends StatelessWidget {
   final int limit; // Add limit parameter to control number of products fetched
@@ -53,12 +54,12 @@ class ProductList extends StatelessWidget {
     final childAspectRatio = screenWidth > 600 ? 0.7 : 1.0;
 
     return Padding(
-      padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.only(bottom: 16.0),
       child: FutureBuilder<List<Map<String, dynamic>>>(
         future: fetchProducts(), // Fetch products with dynamic limit
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return _buildShimmerLoading(cardWidth);
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData) {
@@ -125,4 +126,32 @@ class ProductList extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildShimmerLoading(double cardWidth) {
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: SizedBox(
+      height: cardWidth, // Dynamic height
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 5, // Number of shimmer placeholders
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(
+                left: 8.0, right: 8.0), // Space between shimmer cards
+            child: Container(
+              width: cardWidth, // Same as card width
+              height: cardWidth * 0.1, // Set the height of the shimmer cards
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          );
+        },
+      ),
+    ),
+  );
 }

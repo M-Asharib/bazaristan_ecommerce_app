@@ -101,10 +101,10 @@ class MyApp extends StatelessWidget {
       //   path: '/subcate',
       //   builder: (context, state) => AddCategoryScreen(),
       // ),
-      // GoRoute(
-      //   path: '/cate',
-      //   builder: (context, state) => CategoriesScreen(),
-      // ),
+      GoRoute(
+        path: '/cate',
+        builder: (context, state) => CategoriesScreen(),
+      ),
       // GoRoute(
       //   path: '/products',
       //   builder: (context, state) => ProductsScreen(),

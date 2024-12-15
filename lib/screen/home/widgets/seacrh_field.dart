@@ -5,7 +5,7 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: TextField(
         onSubmitted: (query) {
           // Navigate to the search results page with the query
@@ -18,7 +18,8 @@ class SearchField extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           contentPadding: EdgeInsets.symmetric(
-              vertical: 4, horizontal: 16), // Reduced padding for smaller height
+              vertical: 4,
+              horizontal: 16), // Reduced padding for smaller height
         ),
       ),
     );

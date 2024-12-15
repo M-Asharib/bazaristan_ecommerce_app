@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final String productId;
@@ -66,32 +67,31 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         return;
       }
 
-      final cartRef = FirebaseFirestore.instance
-          .collection('cart')
-          .doc(user.uid)
-          .collection('products');
+      // Reference to the user's cart collection
+      final cartRef = FirebaseFirestore.instance.collection('carts');
 
-      final existingProduct = await cartRef.doc(widget.productId).get();
-      if (existingProduct.exists) {
+      // Check if the product is already in the cart
+      final existingProduct = await cartRef
+          .where('userId', isEqualTo: user.uid)
+          .where('productId', isEqualTo: widget.productId)
+          .get();
+
+      if (existingProduct.docs.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Product is already in the cart.')),
         );
         return;
       }
 
-      await cartRef.doc(widget.productId).set({
-        'name': product!['name'],
-        'price': product!['price'],
+      // Add product to cart
+      await cartRef.add({
+        'userId': user.uid,
+        'productId': widget.productId,
         'quantity': quantity,
-        'image': product!['images1']?.first,
-      });
-
-      setState(() {
-        isAddedToCart = true;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${product!['name']} added to cart!')),
+        SnackBar(content: Text('Product added to cart!')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -99,6 +99,51 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       );
     }
   }
+
+  // Future<void> _addToCart() async {
+  //   try {
+  //     final user = FirebaseAuth.instance.currentUser;
+
+  //     if (user == null) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Please log in to add items to the cart.')),
+  //       );
+  //       return;
+  //     }
+
+  //     final cartRef = FirebaseFirestore.instance
+  //         .collection('cart')
+  //         .doc(user.uid)
+  //         .collection('products');
+
+  //     final existingProduct = await cartRef.doc(widget.productId).get();
+  //     if (existingProduct.exists) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Product is already in the cart.')),
+  //       );
+  //       return;
+  //     }
+
+  //     await cartRef.doc(widget.productId).set({
+  //       'name': product!['name'],
+  //       'price': product!['price'],
+  //       'quantity': quantity,
+  //       'image': product!['images1']?.first,
+  //     });
+
+  //     setState(() {
+  //       isAddedToCart = true;
+  //     });
+
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('${product!['name']} added to cart!')),
+  //     );
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Failed to add to cart: $e')),
+  //     );
+  //   }
+  // }
 
   @override
   void initState() {
@@ -111,7 +156,24 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     if (isLoading) {
       return Scaffold(
         appBar: AppBar(title: Text("Product Details")),
-        body: Center(child: CircularProgressIndicator()),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Shimmer for product image
+              shimmerLoading(height: 200, width: 200),
+              SizedBox(height: 20),
+              // Shimmer for product name
+              shimmerLoading(height: 20, width: 200),
+              SizedBox(height: 10),
+              // Shimmer for product price
+              shimmerLoading(height: 20, width: 100),
+              SizedBox(height: 20),
+              // Shimmer for description
+              shimmerLoading(height: 20, width: 300),
+            ],
+          ),
+        ),
       );
     }
 
@@ -396,4 +458,24 @@ class ProductInfoSection extends StatelessWidget {
       ),
     );
   }
+}
+
+// Function to return a shimmer widget
+Widget shimmerLoading({
+  required double height,
+  required double width,
+  BorderRadius? borderRadius,
+}) {
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: borderRadius ?? BorderRadius.circular(8),
+      ),
+    ),
+  );
 }
