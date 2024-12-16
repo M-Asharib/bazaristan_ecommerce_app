@@ -24,7 +24,7 @@ import 'package:ecommerce/screen/home/widgets/search_result.dart';
 import 'package:ecommerce/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:go_router/go_router.dart'; // Import go_router
+import 'package:go_router/go_router.dart'; 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

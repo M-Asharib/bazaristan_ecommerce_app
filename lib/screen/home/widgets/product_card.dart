@@ -94,7 +94,7 @@ class ProductCard extends StatelessWidget {
                       color: Colors.green,
                     ),
                   ),
-                ),
+                )
               ],
             ),
           ),

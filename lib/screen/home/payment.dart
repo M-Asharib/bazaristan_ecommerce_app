@@ -88,7 +88,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   actions: <Widget>[
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context); // Close the dialog
+                        // Navigator.pop(context); // Close the dialog
                         GoRouter.of(context).go(
                             '/home'); // Navigate to home after closing the dialog
                       },
@@ -107,10 +107,10 @@ class _PaymentPageState extends State<PaymentPage> {
             );
 
             // After 5 seconds, automatically close the dialog and navigate to home
-            Future.delayed(Duration(seconds: 5), () {
-              Navigator.pop(context); // Close the dialog after 5 seconds
-              GoRouter.of(context).go('/home'); // Navigate to the home page
-            });
+            // Future.delayed(Duration(seconds: 5), () {
+            //   Navigator.pop(context); // Close the dialog after 5 seconds
+            //   GoRouter.of(context).go('/home'); // Navigate to the home page
+            // });
           }
         },
         label: Text(

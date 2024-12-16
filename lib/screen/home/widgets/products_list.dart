@@ -64,7 +64,8 @@ class ProductList extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData) {
             var products = snapshot.data!;
-            return SizedBox(
+            return Container(
+              
               height: cardWidth * childAspectRatio, // Dynamic card height
               child: ListView.builder(
                 scrollDirection: Axis.horizontal, // Horizontal sliding
@@ -98,6 +99,7 @@ class ProductList extends StatelessWidget {
                       padding: const EdgeInsets.only(
                           right: 1.0), // Spacing between cards
                       child: SizedBox(
+                      
                         width: cardWidth, // Dynamic card width
                         child: ProductCard(
                           // imageUrl: thumbnails.isNotEmpty

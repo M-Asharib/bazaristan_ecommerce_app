@@ -26,7 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
         ),
         IconButton(
-          icon: Icon(Icons.shopping_cart_outlined),
+          icon: Icon(Icons.logout),
           onPressed: () {
             // Handle cart action
           },

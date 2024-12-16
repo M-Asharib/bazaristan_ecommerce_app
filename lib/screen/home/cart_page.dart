@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ecommerce/screen/home/checkout_page.dart';
 import 'package:ecommerce/screen/home/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -374,310 +375,310 @@ class _CartPageState extends State<CartPage> {
     });
   }
 
-  void showCheckoutBottomSheet() {
-    // Filter selected items for checkout
-    // List<String> pakistanProvinces1 = ['Punjab', 'Sindh', 'Balochistan', 'KPK'];
+  // void showCheckoutBottomSheet() {
+  //   // Filter selected items for checkout
+  //   // List<String> pakistanProvinces1 = ['Punjab', 'Sindh', 'Balochistan', 'KPK'];
 
-    final selectedItems =
-        cartItems.where((item) => item['isSelected']).toList();
+  //   final selectedItems =
+  //       cartItems.where((item) => item['isSelected']).toList();
 
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true, // Ensures the bottom sheet is scrollable
-      builder: (context) {
-        // Define controllers for the shipping details form
-        final phoneController = TextEditingController();
-        final addressController = TextEditingController();
-        final streetController = TextEditingController();
-        final cityController = TextEditingController();
-        final provinceController = TextEditingController();
-        final countryController = TextEditingController(text: 'Pakistan');
+  //   showModalBottomSheet(
+  //     context: context,
+  //     isScrollControlled: true, // Ensures the bottom sheet is scrollable
+  //     builder: (context) {
+  //       // Define controllers for the shipping details form
+  //       final phoneController = TextEditingController();
+  //       final addressController = TextEditingController();
+  //       final streetController = TextEditingController();
+  //       final cityController = TextEditingController();
+  //       final provinceController = TextEditingController();
+  //       final countryController = TextEditingController(text: 'Pakistan');
 
-        // Calculate the total price of selected items
-        double totalPrice = selectedItems.fold(
-            0, (sum, item) => sum + (item['price'] * item['quantity']));
+  //       // Calculate the total price of selected items
+  //       double totalPrice = selectedItems.fold(
+  //           0, (sum, item) => sum + (item['price'] * item['quantity']));
 
-        return ClipRRect(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-          child: Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false, // Removes default back button
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Checkout',
-                    style: TextStyle(fontSize: 20, color: Colors.green),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () {
-                      Navigator.pop(context); // Close the bottom sheet
-                    },
-                  ),
-                ],
-              ),
-            ),
-            floatingActionButton: FloatingActionButton.extended(
-              onPressed: () {
-                // Validate inputs
-                if (phoneController.text.isEmpty ||
-                    addressController.text.isEmpty ||
-                    cityController.text.isEmpty ||
-                    streetController.text.isEmpty ||
-                    provinceController.text.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Please fill all required fields.")),
-                  );
-                  return;
-                }
+  //       return ClipRRect(
+  //         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+  //         child: Scaffold(
+  //           appBar: AppBar(
+  //             automaticallyImplyLeading: false, // Removes default back button
+  //             title: Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 Text(
+  //                   'Checkout',
+  //                   style: TextStyle(fontSize: 20, color: Colors.green),
+  //                 ),
+  //                 IconButton(
+  //                   icon: Icon(Icons.close),
+  //                   onPressed: () {
+  //                     Navigator.pop(context); // Close the bottom sheet
+  //                   },
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //           floatingActionButton: FloatingActionButton.extended(
+  //             onPressed: () {
+  //               // Validate inputs
+  //               if (phoneController.text.isEmpty ||
+  //                   addressController.text.isEmpty ||
+  //                   cityController.text.isEmpty ||
+  //                   streetController.text.isEmpty ||
+  //                   provinceController.text.isEmpty) {
+  //                 ScaffoldMessenger.of(context).showSnackBar(
+  //                   SnackBar(content: Text("Please fill all required fields.")),
+  //                 );
+  //                 return;
+  //               }
 
-                // Navigate to the payment page with shipping details
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PaymentPage(
-                      shippingDetails: {
-                        'phone': phoneController.text,
-                        'address': addressController.text,
-                        'street': streetController.text,
-                        'city': cityController.text,
-                        'country': countryController.text,
-                        'province': provinceController.text,
-                      },
-                    ),
-                  ),
-                );
-              },
-              label: Row(
-                children: [
-                  Text(
-                    '\ ${currency} ${totalPrice.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white, // Green color for the price text
-                    ),
-                  ),
-                  SizedBox(
-                      width:
-                          8), // Add some spacing between the price and the text
-                  Text(
-                    'Proceed to Payment',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-              icon: Icon(
-                Icons.payment,
-                color: Colors.white, // Green color for the icon
-              ),
-              backgroundColor: Colors.green, // White background for the button
-            ),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(height: 16),
+  //               // Navigate to the payment page with shipping details
+  //               Navigator.push(
+  //                 context,
+  //                 MaterialPageRoute(
+  //                   builder: (context) => PaymentPage(
+  //                     shippingDetails: {
+  //                       'phone': phoneController.text,
+  //                       'address': addressController.text,
+  //                       'street': streetController.text,
+  //                       'city': cityController.text,
+  //                       'country': countryController.text,
+  //                       'province': provinceController.text,
+  //                     },
+  //                   ),
+  //                 ),
+  //               );
+  //             },
+  //             label: Row(
+  //               children: [
+  //                 Text(
+  //                   '\ ${currency} ${totalPrice.toStringAsFixed(2)}',
+  //                   style: TextStyle(
+  //                     fontSize: 16,
+  //                     fontWeight: FontWeight.bold,
+  //                     color: Colors.white, // Green color for the price text
+  //                   ),
+  //                 ),
+  //                 SizedBox(
+  //                     width:
+  //                         8), // Add some spacing between the price and the text
+  //                 Text(
+  //                   'Proceed to Payment',
+  //                   style: TextStyle(color: Colors.white),
+  //                 ),
+  //               ],
+  //             ),
+  //             icon: Icon(
+  //               Icons.payment,
+  //               color: Colors.white, // Green color for the icon
+  //             ),
+  //             backgroundColor: Colors.green, // White background for the button
+  //           ),
+  //           body: Padding(
+  //             padding: const EdgeInsets.symmetric(horizontal: 16.0),
+  //             child: SingleChildScrollView(
+  //               child: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 mainAxisSize: MainAxisSize.min,
+  //                 children: [
+  //                   SizedBox(height: 16),
 
-                    // Shipping details form
-                    TextField(
-                      controller: phoneController,
-                      decoration: InputDecoration(
-                        labelText: 'Phone Number',
-                        hintText: 'e.g., 3123456789',
-                        prefixIcon: Icon(Icons.phone),
-                        border: OutlineInputBorder(),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-                      ),
-                      keyboardType: TextInputType
-                          .phone, // Use TextInputType.phone for phone numbers
-                      inputFormatters: [
-                        PhoneInputFormatter(
-                            maxLength:
-                                13), // Applying the phone input formatter
-                      ],
-                    ),
+  //                   // Shipping details form
+  //                   TextField(
+  //                     controller: phoneController,
+  //                     decoration: InputDecoration(
+  //                       labelText: 'Phone Number',
+  //                       hintText: 'e.g., 3123456789',
+  //                       prefixIcon: Icon(Icons.phone),
+  //                       border: OutlineInputBorder(),
+  //                       contentPadding:
+  //                           EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+  //                     ),
+  //                     keyboardType: TextInputType
+  //                         .text, // Use TextInputType.phone for phone numbers
+  //                     inputFormatters: [
+  //                       PhoneInputFormatter(
+  //                           maxLength:
+  //                               13), // Applying the phone input formatter
+  //                     ],
+  //                   ),
 
-                    SizedBox(height: 16),
-                    TextField(
-                      controller: addressController,
-                      decoration: InputDecoration(
-                        labelText: 'Delivery Address',
-                        prefixIcon: Icon(Icons.location_on),
-                        border: OutlineInputBorder(),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-                      ),
-                      keyboardType: TextInputType.text,
-                    ),
-                    SizedBox(height: 16),
-                    TextField(
-                      controller: streetController,
-                      decoration: InputDecoration(
-                        labelText: 'Street Address (Optional)',
-                        prefixIcon: Icon(Icons.streetview),
-                        border: OutlineInputBorder(),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-                      ),
-                      keyboardType: TextInputType.text,
-                    ),
+  //                   SizedBox(height: 16),
+  //                   TextField(
+  //                     controller: addressController,
+  //                     decoration: InputDecoration(
+  //                       labelText: 'Delivery Address',
+  //                       prefixIcon: Icon(Icons.location_on),
+  //                       border: OutlineInputBorder(),
+  //                       contentPadding:
+  //                           EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+  //                     ),
+  //                     keyboardType: TextInputType.text,
+  //                   ),
+  //                   SizedBox(height: 16),
+  //                   TextField(
+  //                     controller: streetController,
+  //                     decoration: InputDecoration(
+  //                       labelText: 'Street Address (Optional)',
+  //                       prefixIcon: Icon(Icons.streetview),
+  //                       border: OutlineInputBorder(),
+  //                       contentPadding:
+  //                           EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+  //                     ),
+  //                     keyboardType: TextInputType.text,
+  //                   ),
 
-                    SizedBox(height: 16),
-                    TextField(
-                      controller: countryController,
-                      enabled: false,
-                      decoration: InputDecoration(
-                        labelText: 'Pakistan',
-                        prefixIcon: Icon(Icons.flag),
-                        border: OutlineInputBorder(),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-                      ),
-                    ),
-                    SizedBox(height: 16),
+  //                   SizedBox(height: 16),
+  //                   TextField(
+  //                     controller: countryController,
+  //                     enabled: false,
+  //                     decoration: InputDecoration(
+  //                       labelText: 'Pakistan',
+  //                       prefixIcon: Icon(Icons.flag),
+  //                       border: OutlineInputBorder(),
+  //                       contentPadding:
+  //                           EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+  //                     ),
+  //                   ),
+  //                   SizedBox(height: 16),
 
-                    Row(
-                      children: [
-                        // Province Dropdown
-                        // Province Dropdown (Parent)
+  //                   Row(
+  //                     children: [
+  //                       // Province Dropdown
+  //                       // Province Dropdown (Parent)
 
-                        Expanded(
-                          child: DropdownSearch<String>(
-                            items: pakistanProvinces1,
-                            selectedItem: provinceController.text.isEmpty
-                                ? null
-                                : provinceController.text,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                provinceController.text = newValue ?? '';
-                                // Update city dropdown based on selected province
-                                final cities = provinceCities1[newValue] ?? [];
-                                cityController.text =
-                                    cities.isNotEmpty ? cities.first : '';
-                                pakistanCities.clear();
-                                pakistanCities.addAll(cities);
-                              });
-                            },
-                            dropdownDecoratorProps: DropDownDecoratorProps(
-                              dropdownSearchDecoration: InputDecoration(
-                                labelText: 'Province',
-                                prefixIcon: Icon(Icons.location_city),
-                                filled: true,
-                                fillColor: Colors.grey[200],
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                            ),
-                            popupProps: PopupProps.menu(showSearchBox: true),
-                            dropdownBuilder: (context, selectedItem) {
-                              return Text(selectedItem ?? 'Province');
-                            },
-                          ),
-                        ),
-                        SizedBox(width: 16),
-                        Expanded(
-                          child: DropdownSearch<String>(
-                            items: pakistanCities, // List of cities in Pakistan
-                            selectedItem: cityController.text.isEmpty
-                                ? null
-                                : cityController
-                                    .text, // Selected city based on controller
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                cityController.text =
-                                    newValue ?? ''; // Update the selected city
-                              });
-                            },
-                            dropdownDecoratorProps: DropDownDecoratorProps(
-                              dropdownSearchDecoration: InputDecoration(
-                                labelText: 'City', // Label for the dropdown
-                                prefixIcon: Icon(
-                                    Icons.location_city), // Icon for the city
-                                filled: true,
-                                fillColor: Colors.grey[200], // Background color
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      10.0), // Border radius
-                                  borderSide: BorderSide.none, // No border side
-                                ),
-                              ),
-                            ),
-                            popupProps: PopupProps.menu(
-                              showSearchBox:
-                                  true, // Enable search box in the dropdown
-                            ),
-                            dropdownBuilder: (context, selectedItem) {
-                              return Text(selectedItem ??
-                                  'City'); // Display selected city or default label
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
+  //                       Expanded(
+  //                         child: DropdownSearch<String>(
+  //                           items: pakistanProvinces1,
+  //                           selectedItem: provinceController.text.isEmpty
+  //                               ? null
+  //                               : provinceController.text,
+  //                           onChanged: (String? newValue) {
+  //                             // setState(() {
+  //                               provinceController.text = newValue ?? '';
+  //                               // Update city dropdown based on selected province
+  //                               final cities = provinceCities1[newValue] ?? [];
+  //                               cityController.text =
+  //                                   cities.isNotEmpty ? cities.first : '';
+  //                               pakistanCities.clear();
+  //                               pakistanCities.addAll(cities);
+  //                             // });
+  //                           },
+  //                           dropdownDecoratorProps: DropDownDecoratorProps(
+  //                             dropdownSearchDecoration: InputDecoration(
+  //                               labelText: 'Province',
+  //                               prefixIcon: Icon(Icons.location_city),
+  //                               filled: true,
+  //                               fillColor: Colors.grey[200],
+  //                               border: OutlineInputBorder(
+  //                                 borderRadius: BorderRadius.circular(10.0),
+  //                                 borderSide: BorderSide.none,
+  //                               ),
+  //                             ),
+  //                           ),
+  //                           popupProps: PopupProps.menu(showSearchBox: true),
+  //                           dropdownBuilder: (context, selectedItem) {
+  //                             return Text(selectedItem ?? 'Province');
+  //                           },
+  //                         ),
+  //                       ),
+  //                       SizedBox(width: 16),
+  //                       Expanded(
+  //                         child: DropdownSearch<String>(
+  //                           items: pakistanCities, // List of cities in Pakistan
+  //                           selectedItem: cityController.text.isEmpty
+  //                               ? null
+  //                               : cityController
+  //                                   .text, // Selected city based on controller
+  //                           onChanged: (String? newValue) {
+  //                             // setState(() {
+  //                               cityController.text =
+  //                                   newValue ?? ''; // Update the selected city
+  //                             // });
+  //                           },
+  //                           dropdownDecoratorProps: DropDownDecoratorProps(
+  //                             dropdownSearchDecoration: InputDecoration(
+  //                               labelText: 'City', // Label for the dropdown
+  //                               prefixIcon: Icon(
+  //                                   Icons.location_city), // Icon for the city
+  //                               filled: true,
+  //                               fillColor: Colors.grey[200], // Background color
+  //                               border: OutlineInputBorder(
+  //                                 borderRadius: BorderRadius.circular(
+  //                                     10.0), // Border radius
+  //                                 borderSide: BorderSide.none, // No border side
+  //                               ),
+  //                             ),
+  //                           ),
+  //                           popupProps: PopupProps.menu(
+  //                             showSearchBox:
+  //                                 true, // Enable search box in the dropdown
+  //                           ),
+  //                           dropdownBuilder: (context, selectedItem) {
+  //                             return Text(selectedItem ??
+  //                                 'City'); // Display selected city or default label
+  //                           },
+  //                         ),
+  //                       ),
+  //                     ],
+  //                   ),
 
-                    Divider(),
+  //                   Divider(),
 
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: selectedItems.length,
-                      itemBuilder: (context, index) {
-                        final item = selectedItems[index];
-                        return ListTile(
-                          contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                          leading: item['image'] != null
-                              ? Image.memory(
-                                  item['image'],
-                                  width: 40,
-                                  height: 40,
-                                  fit: BoxFit.cover,
-                                )
-                              : Icon(Icons.computer, size: 40),
-                          title: Text(
-                            item['name'],
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          subtitle: Text(
-                            'Qty: ${item['quantity']}',
-                            style: TextStyle(fontSize: 14),
-                          ),
-                          trailing: Text(
-                            '\ ${currency} ${(item['price'] * item['quantity']).toStringAsFixed(2)}',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        );
-                      },
-                    ),
+  //                   ListView.builder(
+  //                     shrinkWrap: true,
+  //                     physics: NeverScrollableScrollPhysics(),
+  //                     itemCount: selectedItems.length,
+  //                     itemBuilder: (context, index) {
+  //                       final item = selectedItems[index];
+  //                       return ListTile(
+  //                         contentPadding: EdgeInsets.symmetric(horizontal: 0),
+  //                         leading: item['image'] != null
+  //                             ? Image.memory(
+  //                                 item['image'],
+  //                                 width: 40,
+  //                                 height: 40,
+  //                                 fit: BoxFit.cover,
+  //                               )
+  //                             : Icon(Icons.computer, size: 40),
+  //                         title: Text(
+  //                           item['name'],
+  //                           style: TextStyle(fontSize: 16),
+  //                         ),
+  //                         subtitle: Text(
+  //                           'Qty: ${item['quantity']}',
+  //                           style: TextStyle(fontSize: 14),
+  //                         ),
+  //                         trailing: Text(
+  //                           '\ ${currency} ${(item['price'] * item['quantity']).toStringAsFixed(2)}',
+  //                           style: TextStyle(fontSize: 16),
+  //                         ),
+  //                       );
+  //                     },
+  //                   ),
 
-                    SizedBox(height: 80),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-      backgroundColor:
-          Colors.black.withOpacity(0.2), // Top 20% opacity background
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
-      ),
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.8, // 80% height
-      ),
-    );
-  }
+  //                   SizedBox(height: 80),
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //     backgroundColor:
+  //         Colors.black.withOpacity(0.2), // Top 20% opacity background
+  //     shape: RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.only(
+  //         topLeft: Radius.circular(20),
+  //         topRight: Radius.circular(20),
+  //       ),
+  //     ),
+  //     constraints: BoxConstraints(
+  //       maxHeight: MediaQuery.of(context).size.height * 0.8, // 80% height
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -693,7 +694,16 @@ class _CartPageState extends State<CartPage> {
         onPressed: () {
           if (cartItems.any((item) => item['isSelected'])) {
             // If any item is selected, show the checkout bottom sheet
-            showCheckoutBottomSheet();
+            // showCheckoutBottomSheet();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CheckoutPage(
+                  cartItems: cartItems,
+                  currency: currency,
+                ),
+              ),
+            );
           } else {
             // If no item is selected, you can handle the case (show a message, etc.)
             print("No item selected");

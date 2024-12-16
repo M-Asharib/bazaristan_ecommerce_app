@@ -12,7 +12,8 @@ class ProductHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 2.0), // Add some vertical space
+      padding: const EdgeInsets.only(
+          bottom: 5.0, top: 3.5), // Add some vertical space
       child: Row(
         mainAxisAlignment: MainAxisAlignment
             .spaceBetween, // Space between the title and "See More"

@@ -42,6 +42,9 @@ class _HomePageState extends State<HomePage> {
             // HeroSectionSlider(),
             // CategoriesSection(),
             // Add the header with a "See More" button
+            SizedBox(
+              height: 10,
+            ),
             ProductHeader(
               title: 'Trending Products',
               onSeeMorePressed: () {

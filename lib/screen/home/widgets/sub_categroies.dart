@@ -1,4 +1,6 @@
 import 'package:ecommerce/screen/home/categories_products.dart';
+import 'package:ecommerce/screen/home/home_page.dart';
+import 'package:ecommerce/screen/home/widgets/buttom_navigator_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shimmer/shimmer.dart'; // Import shimmer package
@@ -25,10 +27,31 @@ class SubCategoriesPage extends StatelessWidget {
     });
   }
 
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        HomePage(); // Navigate to Home screen
+        break;
+      case 1:
+        // Navigator.pushNamed(context, '/search'); // Navigate to Search screen
+        break;
+      case 2:
+        // Navigator.pushNamed(context, '/profile'); // Navigate to Profile screen
+        break;
+      default:
+        print("Invalid tab selected");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Sub-categories')),
+      bottomNavigationBar: BottomNavigation(
+        currentIndex: 1,
+        onTap: _onItemTapped,
+        isAdmin: false, // Pass role to BottomNavigation
+      ),
       body: StreamBuilder<List<Map<String, String>>>(
         stream: fetchSubCategories(),
         builder: (context, snapshot) {
