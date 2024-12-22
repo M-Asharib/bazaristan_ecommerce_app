@@ -1,6 +1,6 @@
 import 'package:ecommerce/screen/home/payment.dart';
 import 'package:flutter/material.dart';
-import 'package:dropdown_search/dropdown_search.dart';
+// import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/services.dart';
 
 class CheckoutPage extends StatelessWidget {
@@ -100,23 +100,98 @@ class CheckoutPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 16),
               TextField(
+                cursorColor: Colors.black,
+                onChanged: (value) {
+                  // _convertCurrency();
+                },
                 controller: phoneController,
                 decoration: InputDecoration(
-                  labelText: 'Phone Number',
-                  hintText: 'e.g., 03123456789',
-                  prefixIcon: Icon(Icons.phone),
-                  border: OutlineInputBorder(),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                  labelText: "Enter amount",
+                  labelStyle: TextStyle(color: Colors.black),
+                  filled: true,
+                  fillColor: Colors.grey[200], // Match the color theme
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
+                style: TextStyle(color: Colors.black),
                 keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly, // Only allows numbers
-                  LengthLimitingTextInputFormatter(11), // Limits to 11 digits
-                ],
               ),
+              // SizedBox(height: 20),
+              // DropdownSearch<String>(
+              //   items: pakistanProvinces1,
+              //   dropdownDecoratorProps: DropDownDecoratorProps(
+              //     dropdownSearchDecoration: InputDecoration(
+              //       labelText: "From Currency",
+              //       labelStyle: TextStyle(color: Colors.black),
+              //       filled: true,
+              //       fillColor: Colors.grey[200], // Match the color theme
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(10.0),
+              //         borderSide: BorderSide.none,
+              //       ),
+              //     ),
+              //   ),
+              //   selectedItem: fromCurrency,
+              //   onChanged: (String? newValue) {
+              //     setState(() {
+              //       fromCurrency = newValue!;
+              //       _getCurrencyData(fromCurrency);
+              //       _convertCurrency();
+              //     });
+              //   },
+              //   popupProps: PopupProps.menu(
+              //     showSearchBox: true,
+              //   ),
+              // ),
+              // SizedBox(height: 20),
+              // DropdownSearch<String>(
+              //   items: currencyList,
+              //   dropdownDecoratorProps: DropDownDecoratorProps(
+              //     dropdownSearchDecoration: InputDecoration(
+              //       labelText: "To Currency",
+              //       labelStyle: TextStyle(color: Colors.black),
+              //       filled: true,
+              //       fillColor: Colors.grey[200], // Match the color theme
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(10.0),
+              //         borderSide: BorderSide.none,
+              //       ),
+              //     ),
+              //   ),
+              //   selectedItem: toCurrency,
+              //   onChanged: (String? newValue) {
+              //     setState(() {
+              //       toCurrency = newValue!;
+              //       _getCurrencyData(fromCurrency);
+              //       _convertCurrency();
+              //     });
+              //   },
+              //   popupProps: PopupProps.menu(
+              //     showSearchBox: true,
+              //   ),
+              // ),
+
+              SizedBox(height: 16),
+              // TextField(
+              //   controller: phoneController,
+              //   decoration: InputDecoration(
+              //     labelText: 'Phone Number',
+              //     hintText: 'e.g., 03123456789',
+              //     prefixIcon: Icon(Icons.phone),
+              //     border: OutlineInputBorder(),
+              //     contentPadding:
+              //         EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+              //   ),
+              //   keyboardType: TextInputType.number,
+              //   inputFormatters: [
+              //     FilteringTextInputFormatter.digitsOnly, // Only allows numbers
+              //     LengthLimitingTextInputFormatter(11), // Limits to 11 digits
+              //   ],
+              // ),
+
               SizedBox(height: 16),
               TextField(
                 controller: addressController,
@@ -151,63 +226,89 @@ class CheckoutPage extends StatelessWidget {
                       EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                 ),
               ),
+
+              TextField(
+                controller: provinceController,
+                decoration: InputDecoration(
+                  labelText: 'Street Address (Optional)',
+                  prefixIcon: Icon(Icons.streetview),
+                  border: OutlineInputBorder(),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                ),
+              ),
+
+              TextField(
+                controller: cityController,
+                decoration: InputDecoration(
+                  labelText: 'Street Address (Optional)',
+                  prefixIcon: Icon(Icons.streetview),
+                  border: OutlineInputBorder(),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                ),
+              ),
+
+              SizedBox(height: 16),
+
               SizedBox(height: 16),
               Row(
                 children: [
-                  Expanded(
-                    child: DropdownSearch<String>(
-                      items: pakistanProvinces1,
-                      selectedItem: provinceController.text.isEmpty
-                          ? null
-                          : provinceController.text,
-                      onChanged: (String? newValue) {
-                        provinceController.text = newValue ?? '';
-                        final cities = provinceCities1[newValue] ?? [];
-                        cityController.text =
-                            cities.isNotEmpty ? cities.first : '';
-                        pakistanCities.clear();
-                        pakistanCities.addAll(cities);
-                      },
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          labelText: 'Province',
-                          prefixIcon: Icon(Icons.location_city),
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide.none),
-                        ),
-                      ),
-                      popupProps: PopupProps.menu(showSearchBox: true),
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: DropdownSearch<String>(
-                      items: pakistanCities,
-                      selectedItem: cityController.text.isEmpty
-                          ? null
-                          : cityController.text,
-                      onChanged: (String? newValue) {
-                        cityController.text = newValue ?? '';
-                      },
-                      dropdownDecoratorProps: DropDownDecoratorProps(
-                        dropdownSearchDecoration: InputDecoration(
-                          labelText: 'City',
-                          prefixIcon: Icon(Icons.location_city),
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide.none),
-                        ),
-                      ),
-                      popupProps: PopupProps.menu(showSearchBox: true),
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: DropdownSearch<String>(
+                  //     items: pakistanProvinces1,
+                  //     selectedItem: provinceController.text.isEmpty
+                  //         ? null
+                  //         : provinceController.text,
+                  //     onChanged: (String? newValue) {
+                  //       provinceController.text = newValue ?? '';
+                  //       final cities = provinceCities1[newValue] ?? [];
+                  //       cityController.text =
+                  //           cities.isNotEmpty ? cities.first : '';
+                  //       pakistanCities.clear();
+                  //       pakistanCities.addAll(cities);
+                  //     },
+                  //     dropdownDecoratorProps: DropDownDecoratorProps(
+                  //       dropdownSearchDecoration: InputDecoration(
+                  //         labelText: 'Province',
+                  //         prefixIcon: Icon(Icons.location_city),
+                  //         filled: true,
+                  //         fillColor: Colors.grey[200],
+                  //         border: OutlineInputBorder(
+                  //             borderRadius: BorderRadius.circular(10.0),
+                  //             borderSide: BorderSide.none),
+                  //       ),
+                  //     ),
+                  //     popupProps: PopupProps.menu(showSearchBox: true),
+                  //   ),
+                  // ),
+                  // SizedBox(width: 16),
+                  // Expanded(
+                  //   child: DropdownSearch<String>(
+                  //     items: pakistanCities,
+                  //     selectedItem: cityController.text.isEmpty
+                  //         ? null
+                  //         : cityController.text,
+                  //     onChanged: (String? newValue) {
+                  //       cityController.text = newValue ?? '';
+                  //     },
+                  //     dropdownDecoratorProps: DropDownDecoratorProps(
+                  //       dropdownSearchDecoration: InputDecoration(
+                  //         labelText: 'City',
+                  //         prefixIcon: Icon(Icons.location_city),
+                  //         filled: true,
+                  //         fillColor: Colors.grey[200],
+                  //         border: OutlineInputBorder(
+                  //             borderRadius: BorderRadius.circular(10.0),
+                  //             borderSide: BorderSide.none),
+                  //       ),
+                  //     ),
+                  //     popupProps: PopupProps.menu(showSearchBox: true),
+                  //   ),
+                  // ),
                 ],
               ),
+
               Divider(),
               ListView.builder(
                 shrinkWrap: true,

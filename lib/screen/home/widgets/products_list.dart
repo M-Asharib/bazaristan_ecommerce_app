@@ -17,7 +17,7 @@ class ProductList extends StatelessWidget {
     try {
       final querySnapshot = await FirebaseFirestore.instance
           .collection('products')
-          .limit(10) // Use the limit passed in the constructor
+          .limit(50) // Use the limit passed in the constructor
           .get();
 
       return querySnapshot.docs.map((doc) {
@@ -65,7 +65,6 @@ class ProductList extends StatelessWidget {
           } else if (snapshot.hasData) {
             var products = snapshot.data!;
             return Container(
-              
               height: cardWidth * childAspectRatio, // Dynamic card height
               child: ListView.builder(
                 scrollDirection: Axis.horizontal, // Horizontal sliding
@@ -99,7 +98,6 @@ class ProductList extends StatelessWidget {
                       padding: const EdgeInsets.only(
                           right: 1.0), // Spacing between cards
                       child: SizedBox(
-                      
                         width: cardWidth, // Dynamic card width
                         child: ProductCard(
                           // imageUrl: thumbnails.isNotEmpty

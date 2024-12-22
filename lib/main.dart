@@ -24,7 +24,7 @@ import 'package:ecommerce/screen/home/widgets/search_result.dart';
 import 'package:ecommerce/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:go_router/go_router.dart'; 
+import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -105,22 +105,22 @@ class MyApp extends StatelessWidget {
         path: '/cate',
         builder: (context, state) => CategoriesScreen(),
       ),
-      // GoRoute(
-      //   path: '/products',
-      //   builder: (context, state) => ProductsScreen(),
-      // ),
       GoRoute(
-        path: '/chats',
-        builder: (context, state) => UserChatScreen(),
+        path: '/products',
+        builder: (context, state) => ProductsScreen(),
       ),
+      // GoRoute(
+      //   path: '/chats',
+      //   builder: (context, state) => UserChatScreen(),
+      // ),
       GoRoute(
         path: '/Phone',
         builder: (context, state) => PhoneAuthScreen(),
       ),
-      GoRoute(
-        path: '/adminchats',
-        builder: (context, state) => AdminDashboard(),
-      ),
+      // GoRoute(
+      //   path: '/adminchats',
+      //   builder: (context, state) => AdminDashboard(),
+      // ),
       // Dynamic path for product details
       GoRoute(
         path: '/product/:id', // Define path with dynamic parameter
